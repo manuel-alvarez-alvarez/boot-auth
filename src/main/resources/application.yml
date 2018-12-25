@@ -1,0 +1,37 @@
+boot-auth:
+  jwt:
+    secret: '"P/[-~]^]zc91Na[^yAM&ldNef[+H!>bpj(s\dK}DD?7]A/Ct[OQH}LTD)PV4ip'
+    expiration-time: 3600000
+  cookie:
+    secret:
+    name: auth_jwt
+    max-age: 3600
+    path: /
+
+server:
+  servlet:
+    context-path: /auth
+  error:
+    whitelabel:
+      enabled: false
+
+spring:
+  liquibase:
+    enabled: true
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+
+
+---
+
+spring:
+  profiles:
+    deployed
+  datasource:
+    hikari:
+      jdbc-url: jdbc:mariadb://db-auth:3306/auth
+      username: auth
+      password: auth
+      driver-class-name: org.mariadb.jdbc.Driver

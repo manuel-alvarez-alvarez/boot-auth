@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{template.html}">
+<head>
+    <title>Authentication</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-8 col-xl-6 offset-sm-0 offset-md-1 offset-lg-2 offset-xl-3">
+            <div class="card">
+                <div class="card-header card-header-tabs card-header-primary">
+                    <div class="nav-tabs-wrapper">
+                        <span class="nav-tabs-title">User administration</span>
+                        <ul class="nav nav-tabs float-right">
+                            <li class="nav-item">
+                                <a class="nav-link active" th:href="@{/admin/user/new}" data-toggle="modal" data-target="#add-user">
+                                    <i class="material-icons">add</i> Add user
+                                    <div class="ripple-container"></div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-condensed">
+                            <thead class=" text-primary">
+                            <tr>
+                                <th>Username</th>
+                                <th>Authorities</th>
+                                <th class="actions"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="user: ${users}" th:classappend="${user.enabled ? '' : 'disabled'}">
+                                <td th:text="${user.username}"></td>
+                                <td th:text="${user.authorities}"></td>
+                                <td class="actions">
+                                    <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+                                        <a class="btn btn-sm btn-secondary"
+                                           th:href="@{/admin/user/{id}(id=${user.username})}" data-toggle="modal" data-target="#edit-user"><i class="material-icons">edit</i> Edit user</a>
+                                        <a class="btn btn-sm btn-secondary" data-type="action" data-action-method="PUT"
+                                           th:if="${user.username != #authentication.principal.username and user.enabled == true}"
+                                           th:href="@{/admin/user/{id}/disable(id=${user.username})}"><i class="material-icons">check_box_outline_blank</i> Disable</a>
+                                        <a class="btn btn-sm btn-secondary" data-type="action" data-action-method="PUT"
+                                           th:if="${user.username != #authentication.principal.username and user.enabled == false}"
+                                           th:href="@{/admin/user/{id}/enable(id=${user.username})}"><i class="material-icons">check_box</i> Enable</a>
+                                        <a class="btn btn-sm btn-danger" data-type="action" data-action-method="DELETE"
+                                           th:if="${user.username != #authentication.principal.username}"
+                                           th:href="@{/admin/user/{id}(id=${user.username})}"><i class="material-icons">delete_outline</i> Delete</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="add-user" tabindex="-1" role="dialog" aria-labelledby="add-user-modal"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 id="add-user-modal" class="modal-title">Add user</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <i class="material-icons">clear</i>
+                    </button>
+                </div>
+                <form th:action="@{/admin/user}" method="POST">
+                    <div class="modal-body">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-link" data-type="action">Add</button>
+                        <button type="button" class="btn btn-danger btn-link" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="edit-user" tabindex="-1" role="dialog" aria-labelledby="edit-user-modal"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 id="edit-user-modal" class="modal-title">Edit user</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <i class="material-icons">clear</i>
+                    </button>
+                </div>
+                <form th:action="@{/admin/user}" method="PUT">
+                    <div class="modal-body">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-link" data-type="action">Save</button>
+                        <button type="button" class="btn btn-danger btn-link" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

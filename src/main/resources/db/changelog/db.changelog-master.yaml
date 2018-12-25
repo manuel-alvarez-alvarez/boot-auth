@@ -1,0 +1,50 @@
+databaseChangeLog:
+- changeSet:
+    id: 1
+    author: malvarez
+    changes:
+      - createTable:
+          tableName: users
+          columns:
+            - column:
+                name: username
+                type: varchar(255)
+                constraints:
+                  primaryKey: true
+                  nullable: false
+            - column:
+                name: password
+                type: varchar(255)
+                constraints:
+                  nullable: false
+            - column:
+                name: enabled
+                type: boolean
+                constraints:
+                  nullable: false
+
+      - createTable:
+          tableName: authorities
+          columns:
+            - column:
+                name: username
+                type: varchar(255)
+                constraints:
+                  nullable: false
+            - column:
+                name: authority
+                type: varchar(255)
+                constraints:
+                  nullable: false
+
+      - addForeignKeyConstraint:
+          constraintName: fk_authorities_users
+          baseTableName: authorities
+          baseColumnNames: username
+          referencedTableName: users
+          referencedColumnNames: username
+
+      - addUniqueConstraint:
+          constraintName: ix_auth_username
+          tableName: authorities
+          columnNames: username, authority

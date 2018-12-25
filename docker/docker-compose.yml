@@ -1,0 +1,43 @@
+version: '3.5'
+
+services:
+  nginx-auth:
+    build: ./nginx-auth
+    image: nginx-auth:latest
+    links:
+    - boot-auth
+    depends_on:
+    - boot-auth
+    ports:
+    - "80:80"
+    - "443:443"
+    volumes:
+    - ./conf/nginx/nginx.conf:/etc/nginx/nginx.conf
+    - ./conf/nginx/conf.d:/etc/nginx/conf.d
+
+  boot-auth:
+    build: ./boot-auth
+    image: boot-auth:latest
+    links:
+    - db-auth
+    depends_on:
+    - db-auth
+    ports:
+    - "8000:8000"
+    volumes:
+    - ./conf/spring/application.properties:/application.properties
+    environment:
+      JWPD_OPTS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000
+      JAVA_OPTS: -Djava.security.egd=file:/dev/./urandom'
+
+  db-auth:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: auth
+      MYSQL_USER: auth
+      MYSQL_PASSWORD: auth
+
+networks:
+  default:
+    name: nginx-auth-network

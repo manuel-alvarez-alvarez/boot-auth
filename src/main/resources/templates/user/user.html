@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{template.html}">
+<head>
+    <title>Authentication</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-8 col-xl-6 offset-sm-0 offset-md-1 offset-lg-2 offset-xl-3">
+            <div class="card">
+                <div class="card-header card-header-primary">
+                    <h4 class="card-title">User detail</h4>
+                </div>
+                <div class="card-body" th:fragment="ajax">
+                    <ul class="form-errors"></ul>
+                    <div class="row">
+                        <div class="col-xs-12 col-md-6">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">Username</label>
+                                <input type="text" class="form-control" name="username" th:value="${user.username}" autocomplete="off" required data-type="focusable">
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">Roles</label>
+                                <input type="text" class="form-control" disabled th:value="${user.authorities}" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-md-6">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">Password</label>
+                                <input type="password" class="form-control" name="password" autocomplete="off"
+                                       required>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6">
+                            <div class="form-group">
+                                <label class="bmd-label-floating">Repeat password</label>
+                                <input type="password" class="form-control" name="passwordRepeat" autocomplete="off" required>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
