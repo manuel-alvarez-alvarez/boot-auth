@@ -2,7 +2,7 @@ version: '3.5'
 
 services:
   nginx-auth:
-    build: ./nginx-auth
+    build: nginx-auth
     image: nginx-auth:latest
     links:
     - boot-auth
@@ -16,7 +16,7 @@ services:
     - ./conf/nginx/conf.d:/etc/nginx/conf.d
 
   boot-auth:
-    build: ./boot-auth
+    build: boot-auth
     image: boot-auth:latest
     links:
     - db-auth

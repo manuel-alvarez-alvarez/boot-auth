@@ -1,64 +1,50 @@
 buildscript {
     repositories {
         mavenCentral()
-        jcenter()
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
     }
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
-        classpath "io.franzbecker:gradle-lombok:$gradleLombokVersion"
     }
 }
 
-apply plugin: 'java'
-apply plugin: 'idea'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
-apply plugin: 'io.franzbecker.gradle-lombok'
-
-group = 'es.manuel.nginx'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
-repositories {
-    mavenCentral()
+project(':frontend') {
+    
 }
 
-lombok {
-    version = lombokVersion
-}
+project(':backend') {
 
-task copyBootApplicationJar(type: Copy) {
-    from('build/libs') {
-        include '**/*.jar'
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    group = 'es.manuel.nginx'
+    version = '0.0.1-SNAPSHOT'
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    repositories {
+        mavenCentral()
     }
-    into 'docker/boot-auth'
-}
 
-task deleteBootApplicationJar(type: Delete) {
-    delete fileTree('docker/boot-auth/') {
-        include '**/*.jar'
+    dependencies {
+        compile('org.springframework.boot:spring-boot-starter')
+        compile('org.springframework.boot:spring-boot-starter-web')
+        compile('org.springframework.boot:spring-boot-devtools')
+        compile('org.springframework.boot:spring-boot-starter-security')
+        compile('org.springframework.boot:spring-boot-starter-jdbc')
+        compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+        compile('org.springframework.boot:spring-boot-starter-data-jpa')
+        compile('org.thymeleaf.extras:thymeleaf-extras-springsecurity5')
+        compile('org.liquibase:liquibase-core')
+        compile("com.auth0:java-jwt:$jwtVersion")
+        compile('com.h2database:h2')
+        compile("org.mariadb.jdbc:mariadb-java-client:$mariaDbVersion")
+        compile("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:$thymeleafLayoutVersion")
+        
+        compileOnly("org.projectlombok:lombok:$lombokVersion")
+        
+        annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+        annotationProcessor("org.projectlombok:lombok:$lombokVersion")
     }
-}
-
-tasks.build.finalizedBy(tasks.copyBootApplicationJar)
-
-dependencies {
-    compile('org.springframework.boot:spring-boot-starter')
-    compile('org.springframework.boot:spring-boot-starter-web')
-    compile('org.springframework.boot:spring-boot-devtools')
-    compile('org.springframework.boot:spring-boot-starter-security')
-    compile('org.springframework.boot:spring-boot-starter-jdbc')
-    compile('org.springframework.boot:spring-boot-starter-thymeleaf')
-    compile('org.springframework.boot:spring-boot-starter-data-jpa')
-    compile('org.thymeleaf.extras:thymeleaf-extras-springsecurity5')
-    compile('org.liquibase:liquibase-core')
-    compile("com.auth0:java-jwt:$jwtVersion")
-    compile('com.h2database:h2')
-    compile("org.mariadb.jdbc:mariadb-java-client:$mariaDbVersion")
-    compile("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:$thymeleafLayoutVersion")
-    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 }
